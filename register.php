@@ -21,7 +21,7 @@ if(isset($_POST['register'])){
     else{
    
         echo '<script>alert("User Successfully Added!");
-        window.location.href = "index.html";</script>';
+        window.location.href = "loginpage.html";</script>';
 
 
         
