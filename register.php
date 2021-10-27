@@ -1,6 +1,7 @@
 <?php
 require_once('connect.php');
 
+
 if(isset($_POST['register'])){
     
     $firstname = $_POST['firstname'];
@@ -9,25 +10,33 @@ if(isset($_POST['register'])){
     $email = $_POST['email'];
     $address = $_POST['address'];
     $password = $_POST['password'];
+  
+    $query_email_duplicate = "SELECT email FROM users_tbl WHERE email='$email'";
+    $result_email_duplicate = @mysqli_query($dbc, $query_email_duplicate);
 
-    $query = "INSERT INTO users_tbl(firstname, lastname, birthdate, email, addres, pass, regs_date) 
-                VALUES ('$firstname','$lastname','$birthdate','$email','$address','$password',NOW())";
-
-    $result = @mysqli_query($dbc, $query);
-
-    if (!$result) {
-        $err[] = "Failed to add user: " . mysqli_error($dbc);
+    if(mysqli_num_rows($result_email_duplicate) > 0){
+        echo '<script>alert("Email already used!");
+        window.location.href = "registrationpage.html";</script>'; 
     }
-    else{
+
+    else {
+    $query_register = "INSERT INTO users_tbl(firstname, lastname, birthdate, email, addres, pass, regs_date) 
+                        VALUES ('$firstname','$lastname','$birthdate','$email','$address','$password',NOW())";
+    $result = @mysqli_query($dbc, $query_register);
+
+        if (!$result) {
+        $err[] = "Failed to add user: " . mysqli_error($dbc);
+        }
+
+        else{
    
         echo '<script>alert("User Successfully Added!");
-        window.location.href = "loginpage.html";</script>';
-
-
-        
+        window.location.href = "loginpage.html";</script>';  
+        }
     }
-    mysqli_close($dbc);
-    }
+        mysqli_close($dbc);
+}
+
 else{
     exit('Could not connect to the database ' .mysqli_connect_error());
 }

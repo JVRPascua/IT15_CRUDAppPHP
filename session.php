@@ -2,7 +2,7 @@
    include('connect.php');
    session_start();
    
-   $email = $_SESSION['email'];
+   $email = $_SESSION['login_user'];
    
    $ses_sql = mysqli_query($dbc,"SELECT email FROM users_tbl WHERE email = '$email' ");
    
@@ -10,7 +10,7 @@
    
    $login_session = $row['email'];
    
-   if(!isset($_SESSION['email'])){
+   if(!isset($_SESSION['login_user'])){
       header("location:login.php");
       die();
    }
